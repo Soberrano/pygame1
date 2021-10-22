@@ -57,7 +57,17 @@ while running:
             if i.key == pg.K_LEFT or i.key == pg.K_RIGHT or i.key == pg.K_UP or i.key == pg.K_DOWN:
                 moving = 'STOP'
 
-                
+        foodCounter += 1
+        if foodCounter >= NEWFOOD:
+            foodCounter = 0
+
+        foods.append(pg.Rect(random.randint(0, WIDTH - FOODSIZE)
+                             , random.randint(0, HEIGHT - FOODSIZE)
+                             , FOODSIZE
+                             , FOODSIZE))
+
+
+
     screen.fill(WHITE)
 
     if moving == 'DOWN' and player.bottom < HEIGHT:
@@ -69,7 +79,20 @@ while running:
     if moving == 'RIGHT' and player.right < WIDTH:
         player.right += MOVESPEED
 
+
+    #Отрисовка персонажа
     pg.draw.rect(screen, GREEN, player)
+
+    #Удаление еды
+    for food_col in foods:
+        if player.colliderect(food_col):
+            foods.remove(food_col)
+
+    #Отрисовка еды
+    for food in foods:
+        pg.draw.rect(screen, RED, food)
+
+
 
 
     pg.display.update()
